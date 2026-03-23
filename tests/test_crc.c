@@ -14,7 +14,8 @@ static void check(const crc_params_t *p)
 {
     uint64_t result = crc_compute(p, CHECK_DATA, CHECK_LEN);
     int ok = (result == p->check);
-    if (!ok) failures++;
+    int ok_verify = crc_verify(p, CHECK_DATA, CHECK_LEN, p->check);
+    if (!ok || !ok_verify) failures++;
     printf("%-30s 0x%016"PRIx64"  %s\n", p->name, result, ok ? "OK" : "FAIL");
 }
 

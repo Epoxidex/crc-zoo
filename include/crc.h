@@ -13,9 +13,13 @@ typedef struct {
     int         ref_out;
     uint64_t    xor_out;
     uint64_t    check;
+    uint64_t    residue;
 } crc_params_t;
 
 uint64_t crc_compute(const crc_params_t *p, const uint8_t *data, size_t len);
+
+int crc_verify(const crc_params_t *p, const uint8_t *data, size_t len, uint64_t received_crc);
+int crc_verify_frame(const crc_params_t *p, const uint8_t *frame, size_t frame_len);
 
 extern const crc_params_t CRC_3_GSM;
 extern const crc_params_t CRC_3_ROHC;
