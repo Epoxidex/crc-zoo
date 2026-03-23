@@ -1,5 +1,5 @@
 CC      = gcc
-CFLAGS  = -Wall -Wextra -std=c11 -I include
+CFLAGS  = -Wall -Wextra -std=c11 -O2 -I include
 SRC     = src/crc.c
 TEST    = tests/test_crc.c
 
