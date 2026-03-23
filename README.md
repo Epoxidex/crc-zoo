@@ -41,7 +41,6 @@ CRC-82/DARC is not included — it requires 82-bit arithmetic beyond `uint64_t`.
 | CRC-8/MAXIM-DOW | 8 | 0x31 | 0x00 | true | true | 0x00 | 0xa1 |
 | CRC-8/MIFARE-MAD | 8 | 0x1d | 0xc7 | false | false | 0x00 | 0x99 |
 | CRC-8/NRSC-5 | 8 | 0x31 | 0xff | false | false | 0x00 | 0xf7 |
-| CRC-8/NRSC-5 | 8 | 0x31 | 0xff | false | false | 0x00 | 0xf7 |
 | CRC-8/OPENSAFETY | 8 | 0x2f | 0x00 | false | false | 0x00 | 0x3e |
 | CRC-8/ROHC | 8 | 0x07 | 0xff | true | true | 0x00 | 0xd0 |
 | CRC-8/SAE-J1850 | 8 | 0x1d | 0xff | false | false | 0xff | 0x4b |
