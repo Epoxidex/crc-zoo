@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stddef.h>
+#include <string.h>
 #include "crc.h"
 
 /* Standard check string per Ross Williams model */
@@ -9,6 +10,29 @@ static const uint8_t CHECK_DATA[] = "123456789";
 #define CHECK_LEN 9
 
 static int failures = 0;
+
+static void check_frame(const crc_params_t *p)
+{
+    if (p->width % 8 != 0)
+        return;
+
+    int bytes = p->width / 8;
+    uint8_t frame[CHECK_LEN + 8];
+    memcpy(frame, CHECK_DATA, CHECK_LEN);
+
+    uint64_t crc = p->check;
+    if (p->ref_out) {
+        for (int i = 0; i < bytes; i++)
+            frame[CHECK_LEN + i] = (crc >> (8 * i)) & 0xff;
+    } else {
+        for (int i = 0; i < bytes; i++)
+            frame[CHECK_LEN + i] = (crc >> (8 * (bytes - 1 - i))) & 0xff;
+    }
+
+    int ok = crc_verify_frame(p, frame, CHECK_LEN + bytes);
+    if (!ok) failures++;
+    printf("  %-28s frame: %s\n", p->name, ok ? "OK" : "FAIL");
+}
 
 static void check(const crc_params_t *p)
 {
@@ -65,6 +89,13 @@ int main(void)
 
     for (size_t i = 0; i < N_CRCS; i++)
         check(all_crcs[i]);
+
+    printf("%.60s\n", "------------------------------------------------------------");
+    printf("\n%-30s %-18s  %s\n", "Algorithm (byte-aligned)", "Frame", "Status");
+    printf("%.60s\n", "------------------------------------------------------------");
+
+    for (size_t i = 0; i < N_CRCS; i++)
+        check_frame(all_crcs[i]);
 
     printf("%.60s\n", "------------------------------------------------------------");
     printf("Result: %d FAIL\n", failures);
