@@ -200,7 +200,7 @@ const crc_params_t CRC_32_MPEG_2    = {"CRC-32/MPEG-2",    32, 0x04c11db7,      
 const crc_params_t CRC_32_XFER      = {"CRC-32/XFER",      32, 0x000000af,        0x00000000,        0,0, 0x00000000,        0xbd0be338, 0x0};
 
 /* 40-bit */
-const crc_params_t CRC_40_GSM       = {"CRC-40/GSM",       40, 0x0004820009ULL,   0x0000000000ULL,   0,0, 0xffffffffffULL,   0xd4164fc646ULL, 0x4ff8071ff};
+const crc_params_t CRC_40_GSM       = {"CRC-40/GSM",       40, 0x0004820009ULL,   0x0000000000ULL,   0,0, 0xffffffffffULL,   0xd4164fc646ULL, 0xc4ff8071ff};
 
 /* 64-bit */
 const crc_params_t CRC_64_ECMA_182  = {"CRC-64/ECMA-182",  64, 0x42f0e1eba9ea3693ULL, 0x0000000000000000ULL, 0,0, 0x0000000000000000ULL, 0x6c40df5f0b497347ULL, 0x0};
