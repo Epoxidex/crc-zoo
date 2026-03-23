@@ -11,36 +11,35 @@ static const uint8_t CHECK_DATA[] = "123456789";
 
 static int failures = 0;
 
-static void check_frame(const crc_params_t *p)
-{
-    if (p->width % 8 != 0)
-        return;
-
-    int bytes = p->width / 8;
-    uint8_t frame[CHECK_LEN + 8];
-    memcpy(frame, CHECK_DATA, CHECK_LEN);
-
-    uint64_t crc = p->check;
-    if (p->ref_out) {
-        for (int i = 0; i < bytes; i++)
-            frame[CHECK_LEN + i] = (crc >> (8 * i)) & 0xff;
-    } else {
-        for (int i = 0; i < bytes; i++)
-            frame[CHECK_LEN + i] = (crc >> (8 * (bytes - 1 - i))) & 0xff;
-    }
-
-    int ok = crc_verify_frame(p, frame, CHECK_LEN + bytes);
-    if (!ok) failures++;
-    printf("  %-28s frame: %s\n", p->name, ok ? "OK" : "FAIL");
-}
-
 static void check(const crc_params_t *p)
 {
     uint64_t result = crc_compute(p, CHECK_DATA, CHECK_LEN);
     int ok = (result == p->check);
     int ok_verify = crc_verify(p, CHECK_DATA, CHECK_LEN, p->check);
     if (!ok || !ok_verify) failures++;
-    printf("%-30s 0x%016"PRIx64"  %s\n", p->name, result, ok ? "OK" : "FAIL");
+
+    const char *frame_status;
+    if (p->width % 8 != 0) {
+        frame_status = "skip";
+    } else {
+        int bytes = p->width / 8;
+        uint8_t frame[CHECK_LEN + 8];
+        memcpy(frame, CHECK_DATA, CHECK_LEN);
+        uint64_t crc = p->check;
+        if (p->ref_out) {
+            for (int i = 0; i < bytes; i++)
+                frame[CHECK_LEN + i] = (crc >> (8 * i)) & 0xff;
+        } else {
+            for (int i = 0; i < bytes; i++)
+                frame[CHECK_LEN + i] = (crc >> (8 * (bytes - 1 - i))) & 0xff;
+        }
+        int ok_frame = crc_verify_frame(p, frame, CHECK_LEN + bytes);
+        if (!ok_frame) failures++;
+        frame_status = ok_frame ? "OK" : "FAIL";
+    }
+
+    printf("%-30s 0x%016"PRIx64"  %-4s  frame: %s\n",
+           p->name, result, ok ? "OK" : "FAIL", frame_status);
 }
 
 static const crc_params_t * const all_crcs[] = {
@@ -84,18 +83,11 @@ static const crc_params_t * const all_crcs[] = {
 
 int main(void)
 {
-    printf("%-30s %-18s  %s\n", "Algorithm", "Result", "Status");
+    printf("%-30s %-18s  %-4s  %s\n", "Algorithm", "Result", "CRC", "Frame");
     printf("%.60s\n", "------------------------------------------------------------");
 
     for (size_t i = 0; i < N_CRCS; i++)
         check(all_crcs[i]);
-
-    printf("%.60s\n", "------------------------------------------------------------");
-    printf("\n%-30s %-18s  %s\n", "Algorithm (byte-aligned)", "Frame", "Status");
-    printf("%.60s\n", "------------------------------------------------------------");
-
-    for (size_t i = 0; i < N_CRCS; i++)
-        check_frame(all_crcs[i]);
 
     printf("%.60s\n", "------------------------------------------------------------");
     printf("Result: %d FAIL\n", failures);
