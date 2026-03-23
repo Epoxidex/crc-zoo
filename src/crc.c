@@ -49,7 +49,8 @@ int crc_verify(const crc_params_t *p, const uint8_t *data, size_t len, uint64_t 
 
 int crc_verify_frame(const crc_params_t *p, const uint8_t *frame, size_t frame_len)
 {
-    return crc_compute(p, frame, frame_len) == p->residue;
+    uint64_t mask = (p->width == 64) ? ~0ULL : (1ULL << p->width) - 1;
+    return ((crc_compute(p, frame, frame_len) ^ p->xor_out) & mask) == p->residue;
 }
 /* -------------------------------------------------------------------------
  * All 113 algorithms from reveng.sourceforge.io/crc-catalogue (Dec 2024)
