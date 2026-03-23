@@ -116,7 +116,7 @@ CRC-82/DARC is not included — it requires 82-bit arithmetic beyond `uint64_t`.
 | CRC-32/MEF | 32 | 0x741b8cd7 | 0xffffffff | true | true | 0x00000000 | 0xd2c22f51 | 0x00000000 |
 | CRC-32/MPEG-2 | 32 | 0x04c11db7 | 0xffffffff | false | false | 0x00000000 | 0x0376e6e7 | 0x00000000 |
 | CRC-32/XFER | 32 | 0x000000af | 0x00000000 | false | false | 0x00000000 | 0xbd0be338 | 0x00000000 |
-| CRC-40/GSM | 40 | 0x0004820009 | 0x0000000000 | false | false | 0xffffffffff | 0xd4164fc646 | 0x4ff8071ff |
+| CRC-40/GSM | 40 | 0x0004820009 | 0x0000000000 | false | false | 0xffffffffff | 0xd4164fc646 | 0xc4ff8071ff |
 | CRC-64/ECMA-182 | 64 | 0x42f0e1eba9ea3693 | 0x0000000000000000 | false | false | 0x0000000000000000 | 0x6c40df5f0b497347 | 0x0000000000000000 |
 | CRC-64/GO-ISO | 64 | 0x000000000000001b | 0xffffffffffffffff | true | true | 0xffffffffffffffff | 0xb90956c775a41001 | 0x5300000000000000 |
 | CRC-64/MS | 64 | 0x259c84cba6426349 | 0xffffffffffffffff | true | true | 0x0000000000000000 | 0x75d4b74f024eceea | 0x0000000000000000 |
