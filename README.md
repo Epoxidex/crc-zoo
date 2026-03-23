@@ -143,8 +143,17 @@ uint64_t crc = crc_compute(&CRC_32_ISO_HDLC, data, len);
 uint64_t crc = crc32_iso_hdlc(data, len);
 ```
 
+## Tests
+
+Each algorithm is verified against the standard check value for `"123456789"`.
+For byte-aligned algorithms (width divisible by 8), frame verification is also
+tested: the check value is appended to the message and `crc_verify_frame()` is
+called to confirm the result equals the residue. Non-byte-aligned algorithms
+(widths 3–7, 10–15, 17, 21, 30, 31) are skipped for frame verification —
+their CRC values don't map cleanly to bytes without protocol-specific bit
+packing rules.
+
 ## Planned
 
 - CRC-82/DARC support via `__uint128_t`
 - Lookup table optimization
-- `residue` field in `crc_params_t`
