@@ -1,3 +1,4 @@
+#include <inttypes.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <stddef.h>
@@ -14,7 +15,7 @@ static void check(const crc_params_t *p)
     uint64_t result = crc_compute(p, CHECK_DATA, CHECK_LEN);
     int ok = (result == p->check);
     if (!ok) failures++;
-    printf("%-30s 0x%016lX  %s\n", p->name, result, ok ? "OK" : "FAIL");
+    printf("%-30s 0x%016"PRIx64"  %s\n", p->name, result, ok ? "OK" : "FAIL");
 }
 
 int main(void)
